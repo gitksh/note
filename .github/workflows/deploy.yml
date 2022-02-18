@@ -1,0 +1,17 @@
+name: Deploy
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Deploy
+        run: |
+          curl -X POST https://api.github.com/repos/${{ secrets.DEPLOY_REPOSITORY }}/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u smallstepman:${{ secrets.ACCESS_TOKEN }} \
+          --data '{"event_type": "post"}'
